@@ -37,3 +37,16 @@ jobs:
         uses: jwgmeligmeyling/spotbugs-github-action@master
         with:
           path: '**/spotbugsXml.xml'
+
+
+      - name: Grype Dependency Scanner (Report) 
+        id: scan
+        uses: anchore/scan-action@v5
+        with:
+          path: "."
+          #acs-report-enable: true
+          fail-build: false # to always generate the report, then again a scan that might fail
+
+      - name: Inspect Dependency SARIF Report
+        run: cat ${{ steps.scan.outputs.sarif }}
+
